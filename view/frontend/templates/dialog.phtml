@@ -1,0 +1,28 @@
+<?php
+/**
+ * Copyright © 2026 Roman Pasichnyk
+ * SPDX-License-Identifier: OSL-3.0 OR AFL-3.0
+ *
+ * The quick view dialog, once per page: the product loads into its body.
+ * Closed by the close button, Esc or a click outside (<form method="dialog">).
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Zero\QuickView\ViewModel\QuickView $quickView
+ */
+$quickView = $block->getData('quick_view');
+if (!$quickView || !$quickView->isEnabled()) {
+    return;
+}
+$id = \Zero\QuickView\ViewModel\QuickView::DIALOG_ID;
+?>
+<dialog id="<?= $escaper->escapeHtmlAttr($id) ?>" class="modal zero-quickview" aria-label="<?= $escaper->escapeHtmlAttr(__('Quick view')) ?>">
+    <div class="modal-box zero-quickview-box">
+        <form method="dialog" class="zero-quickview-close">
+            <button aria-label="<?= $escaper->escapeHtmlAttr(__('Close')) ?>">&times;</button>
+        </form>
+        <p class="zero-quickview-loading text-sm text-base-content/70"><?= $escaper->escapeHtml(__('Loading…')) ?></p>
+        <div id="<?= $escaper->escapeHtmlAttr($id) ?>-body" class="zero-quickview-body"></div>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button><?= $escaper->escapeHtml(__('Close')) ?></button></form>
+</dialog>

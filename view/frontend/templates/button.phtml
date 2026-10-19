@@ -1,0 +1,32 @@
+<?php
+/**
+ * Copyright © 2026 Roman Pasichnyk
+ * SPDX-License-Identifier: OSL-3.0 OR AFL-3.0
+ *
+ * A card's "Quick view": one block (zero.quickview.button) for every card,
+ * as the badges; the list template sets `product` and renders it. Opens the
+ * dialog (the theme's data-dialog-open) and loads the product into it
+ * (HTMX); while it loads, the dialog shows "Loading…" (hx-indicator).
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Zero\QuickView\ViewModel\QuickView $quickView
+ */
+$quickView = $block->getData('quick_view');
+$product = $block->getProduct();
+if (!$product || !$quickView || !$quickView->isEnabled()) {
+    return;
+}
+$dialog = '#' . \Zero\QuickView\ViewModel\QuickView::DIALOG_ID;
+?>
+<button type="button" class="product-quickview"
+        data-dialog-open="<?= $escaper->escapeHtmlAttr($dialog) ?>"
+        hx-get="<?= $escaper->escapeUrl($quickView->contentUrl($product)) ?>"
+        hx-target="<?= $escaper->escapeHtmlAttr($dialog) ?>-body"
+        hx-swap="innerHTML"
+        hx-indicator="<?= $escaper->escapeHtmlAttr($dialog) ?>"
+        aria-haspopup="dialog"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Quick view: %1', $product->getName())) ?>">
+    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+    <span><?= $escaper->escapeHtml(__('Quick view')) ?></span>
+</button>

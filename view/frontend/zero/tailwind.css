@@ -1,0 +1,101 @@
+/**
+ * Copyright © 2026 Roman Pasichnyk
+ * SPDX-License-Identifier: OSL-3.0 OR AFL-3.0
+ *
+ * Picked up by the Zero theme build (scripts/collect-module-styles.mjs)
+ * while Zero_QuickView is enabled.
+ */
+@source "../templates/**/*.phtml";
+
+@layer components {
+    /* The card's button: over the photo's bottom edge. With a mouse it shows on hover and focus; on a touch screen always. */
+    .product-item-info {
+        position: relative;
+    }
+
+    .product-quickview {
+        position: absolute;
+        inset-inline: 0.75rem;
+        /* Over the photo's bottom edge (the theme's .product-item-media wraps the photo): the badges sit at its top, and on a phone's narrow card the two would meet. */
+        bottom: 0.75rem;
+        z-index: 2;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.375rem;
+        min-height: 2.25rem;
+        margin-inline-start: auto;
+        width: max-content;
+        padding: 0 0.75rem;
+        background: color-mix(in srgb, var(--color-base-100) 92%, transparent);
+        color: var(--color-base-content);
+        border: 1px solid var(--color-base-300);
+        font-size: var(--text-2xs);
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+
+    @media (hover: hover) {
+        .product-quickview {
+            opacity: 0;
+        }
+
+        .product-item-info:hover .product-quickview,
+        .product-quickview:focus-visible {
+            opacity: 1;
+        }
+    }
+
+    .zero-quickview-close {
+        position: absolute;
+        top: 0.5rem;
+        inset-inline-end: 0.5rem;
+    }
+
+    .zero-quickview-close button {
+        display: grid;
+        place-items: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 999px;
+        background: transparent;
+        border: 0;
+        color: var(--color-base-content);
+        font-size: 1.75rem;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .zero-quickview-close button:hover,
+    .zero-quickview-close button:focus-visible {
+        background: var(--color-base-200);
+    }
+
+    /* While the product loads (hx-indicator on the dialog): "Loading…", the previous product hidden. */
+    .zero-quickview-loading {
+        display: none;
+    }
+
+    .zero-quickview.htmx-request .zero-quickview-loading {
+        display: block;
+    }
+
+    .zero-quickview.htmx-request .zero-quickview-body {
+        visibility: hidden;
+    }
+
+    .zero-quickview-price .price-box {
+        margin: 0;
+    }
+}
+
+/* The dialog's size, outside the layers: DaisyUI's .modal-box (32rem) is in a later one. */
+.modal .zero-quickview-box {
+    position: relative;
+    width: min(56rem, 92vw);
+    max-width: none;
+    padding-top: 3rem;
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+    Copyright © 2026 Roman Pasichnyk
+    SPDX-License-Identifier: OSL-3.0 OR AFL-3.0
+
+    The quick view dialog, and the cards' button block (the Zero theme's
+    product list renders it on each card, as the badges).
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Framework\View\Element\Template" name="zero.quickview.dialog" template="Zero_QuickView::dialog.phtml">
+                <arguments>
+                    <argument name="quick_view" xsi:type="object">Zero\QuickView\ViewModel\QuickView</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Framework\View\Element\Template" name="zero.quickview.button" template="Zero_QuickView::button.phtml">
+                <arguments>
+                    <argument name="quick_view" xsi:type="object">Zero\QuickView\ViewModel\QuickView</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

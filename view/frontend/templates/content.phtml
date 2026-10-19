@@ -1,0 +1,50 @@
+<?php
+/**
+ * Copyright © 2026 Roman Pasichnyk
+ * SPDX-License-Identifier: OSL-3.0 OR AFL-3.0
+ *
+ * The product in the quick view dialog (Controller\Product\View): photo,
+ * name, price, stock, summary; Add to Cart for a product with nothing to
+ * choose (a plain POST: Magento adds it and returns to the list), "Choose
+ * options" otherwise; the full page in any case.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+/** @var \Magento\Catalog\Model\Product $product */
+$product = $block->getData('product');
+/** @var \Zero\QuickView\ViewModel\QuickView $quickView */
+$quickView = $block->getData('quick_view');
+$url = $product->getProductUrl();
+$summary = $quickView->summary($product);
+?>
+<div class="grid gap-6 sm:grid-cols-2 items-start" data-quickview-product="<?= (int) $product->getId() ?>">
+    <a href="<?= $escaper->escapeUrl($url) ?>" class="block bg-base-200">
+        <img src="<?= $escaper->escapeUrl($quickView->imageUrl($product)) ?>" alt="<?= $escaper->escapeHtmlAttr($product->getName()) ?>"
+             class="w-full aspect-square object-contain" width="700" height="700">
+    </a>
+    <div class="flex flex-col gap-3">
+        <h2 class="text-2xl font-medium tracking-tight" id="zero-quickview-title">
+            <a href="<?= $escaper->escapeUrl($url) ?>" class="hover:underline"><?= $escaper->escapeHtml($product->getName()) ?></a>
+        </h2>
+        <div class="zero-quickview-price"><?= /* @noEscape */ $quickView->priceHtml($product, $block->getLayout()) ?></div>
+        <p class="text-sm font-semibold <?= $product->isSaleable() ? 'text-success' : 'text-error' ?>">
+            <?= $escaper->escapeHtml($product->isSaleable() ? __('In stock') : __('Out of stock')) ?>
+        </p>
+        <?php if ($summary !== ''): ?>
+            <p class="text-sm text-base-content/80"><?= $escaper->escapeHtml($summary) ?></p>
+        <?php endif; ?>
+        <?php if ($quickView->addsDirectly($product)): ?>
+            <form method="post" action="<?= $escaper->escapeUrl($quickView->addUrl($product)) ?>" class="flex gap-3 items-center mt-2" data-quickview-tocart>
+                <?= $block->getBlockHtml('formkey') ?>
+                <input type="hidden" name="product" value="<?= (int) $product->getId() ?>">
+                <label class="sr-only" for="zero-quickview-qty"><?= $escaper->escapeHtml(__('Qty')) ?></label>
+                <input type="number" id="zero-quickview-qty" name="qty" value="1" min="1" class="input input-bordered w-20 text-center">
+                <button type="submit" class="btn btn-primary grow"><?= $escaper->escapeHtml(__('Add to Cart')) ?></button>
+            </form>
+        <?php elseif ($product->isSaleable()): ?>
+            <a href="<?= $escaper->escapeUrl($url) ?>" class="btn btn-primary mt-2"><?= $escaper->escapeHtml(__('Choose options')) ?></a>
+        <?php endif; ?>
+        <a href="<?= $escaper->escapeUrl($url) ?>" class="link text-sm self-start"><?= $escaper->escapeHtml(__('View full details')) ?></a>
+    </div>
+</div>
