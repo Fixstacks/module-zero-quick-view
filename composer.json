@@ -2,7 +2,7 @@
     "name": "fixstacks/module-zero-quick-view",
     "description": "Zero for Magento Open Source: \"Quick view\" on product cards: the product in a dialog with its photo, price and stock, and Add to Cart for a product with nothing to choose.",
     "type": "magento2-module",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "license": [
         "OSL-3.0",
         "AFL-3.0"
@@ -28,7 +28,7 @@
         "magento/module-catalog": "*",
         "magento/module-config": "*",
         "magento/module-store": "*",
-        "fixstacks/module-zero-core": "^1.1"
+        "fixstacks/module-zero-core": "^1.2"
     },
     "autoload": {
         "files": [
