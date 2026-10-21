@@ -1,4 +1,4 @@
-# fixstacks/module-zero-quick-view — licensing
+# zerofront/module-zero-quick-view — licensing
 
 Copyright © 2026 Roman Pasichnyk.
 
